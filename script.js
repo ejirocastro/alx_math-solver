@@ -25,7 +25,7 @@ class Calculator {
 
   appendNumber(number) {
     if (number === "." && this.currentOperand.includes(".")) return;
-    this.currentOperand = this.currentOperand.toString() + number.toString();
+    this.currentOperand += number.toString();
   }
 
   delete() {
