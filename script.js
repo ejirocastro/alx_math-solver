@@ -39,7 +39,9 @@ class Calculator {
       // clear output form
       this.currentOperand = "";
       this.currentOperandTextElement.value = "";
+      this.currentOperandTextElement.focus();
 
+      if (result === undefined) throw new Error("Invalid Operation");
       console.log(result);
       return;
     } catch (error) {
@@ -76,13 +78,6 @@ numberButtons.forEach(function (button) {
     calculator.updateDisplay();
   });
 });
-
-/*numberOperations.forEach(function(buttonOperation) {
-    buttonOperation.addEventListener('click', function() {
-        calculator.appendNumber(buttonOperation.textContent)
-        calculator.updateDisplay()
-    })
-})*/
 
 deleteButton.addEventListener("click", () => {
   calculator.delete();
