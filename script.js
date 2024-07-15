@@ -39,14 +39,13 @@ class Calculator {
     try {
       const result = math.evaluate(this.currentOperand);
 
+      if (result === undefined) throw new Error("Invalid Operation");
+      answer.textContent = `${this.currentOperand} = ${result}`;
+
       // clear output form
       this.currentOperand = "";
       this.currentOperandTextElement.value = "";
       this.currentOperandTextElement.focus();
-
-      if (result === undefined) throw new Error("Invalid Operation");
-
-      return (answer.textContent = result);
     } catch (error) {
       return (answer.textContent =
         error.msg === undefined && "Invalid Operation");
