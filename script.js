@@ -28,6 +28,7 @@ class Calculator {
   appendNumber(number) {
     if (number === "." && this.currentOperand.includes(".")) return;
     this.currentOperand += number || this.currentOperandTextElement.value;
+    this.currentOperandTextElement.focus();
   }
 
   delete() {
@@ -100,3 +101,7 @@ numberOperations.forEach((button) => {
 
 // Equal Sign
 equalsButton.addEventListener("click", calculator.compute.bind(calculator));
+
+currentOperandTextElement.addEventListener("keypress", function ({ key }) {
+  if (key === "Enter") calculator.compute();
+});
