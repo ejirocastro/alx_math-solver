@@ -10,6 +10,8 @@ const currentOperandTextElement = document.querySelector(
   "[data-current-operand]"
 );
 
+const answer = document.querySelector(".answer");
+
 class Calculator {
   constructor(previousOperandTextElement, currentOperandTextElement) {
     this.previousOperandTextElement = previousOperandTextElement;
@@ -42,11 +44,11 @@ class Calculator {
       this.currentOperandTextElement.focus();
 
       if (result === undefined) throw new Error("Invalid Operation");
-      console.log(result);
-      return;
+
+      return (answer.textContent = result);
     } catch (error) {
-      console.log(error.msg === undefined && "Invalid Operation");
-      return error;
+      return (answer.textContent =
+        error.msg === undefined && "Invalid Operation");
     }
   }
 
