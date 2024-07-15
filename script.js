@@ -25,7 +25,7 @@ class Calculator {
 
   appendNumber(number) {
     if (number === "." && this.currentOperand.includes(".")) return;
-    this.currentOperand += number.toString();
+    this.currentOperand += number || this.currentOperandTextElement.value;
   }
 
   delete() {
@@ -33,34 +33,18 @@ class Calculator {
   }
 
   compute() {
-    // Check for empty or invalid
-    if (
-      !this.currentOperand.trim() ||
-      !/^[0-9+\-*/\s]+$/.test(this.currentOperand)
-    ) {
-      console.log("Invalid or empty expression");
-    }
+    try {
+      const result = math.evaluate(this.currentOperand);
 
-    // Validate the expression
-    if (
-      /[\+\-\*/]{2,}/.test(this.currentOperand) ||
-      /[\+\-\*/]$/.test(this.currentOperand)
-    ) {
-      console.log("Malformed expression");
+      // clear output form
+      this.currentOperand = "";
+      this.currentOperandTextElement.value = "";
+
+      console.log(result);
       return;
-    }
-
-    if (/^[0-9+\-*/\s]+$/.test(this.currentOperand)) {
-      try {
-        const result = new Function("return " + this.currentOperand)();
-        console.log(result);
-      } catch (error) {
-        // console.error(error);
-        console.log(error.msg);
-        return error;
-      }
-    } else {
-      console.log("Invalid characters in input");
+    } catch (error) {
+      console.log(error.msg === undefined && "Invalid Operation");
+      return error;
     }
   }
 
@@ -70,8 +54,8 @@ class Calculator {
       this.compute();
     }
     this.operation = operation;
-    this.previousOperand = this.currentOperand;
-    this.currentOperand = " ";
+    // this.previousOperand = this.currentOperand;
+    this.currentOperand += operation;
   }
 
   updateDisplay() {
@@ -116,3 +100,6 @@ numberOperations.forEach((button) => {
     calculator.updateDisplay();
   });
 });
+
+// Equal Sign
+equalsButton.addEventListener("click", calculator.compute.bind(calculator));
