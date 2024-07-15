@@ -32,7 +32,37 @@ class Calculator {
     this.currentOperand = this.currentOperand.toString().slice(0, -1);
   }
 
-  compute() {}
+  compute() {
+    // Check for empty or invalid
+    if (
+      !this.currentOperand.trim() ||
+      !/^[0-9+\-*/\s]+$/.test(this.currentOperand)
+    ) {
+      console.log("Invalid or empty expression");
+    }
+
+    // Validate the expression
+    if (
+      /[\+\-\*/]{2,}/.test(this.currentOperand) ||
+      /[\+\-\*/]$/.test(this.currentOperand)
+    ) {
+      console.log("Malformed expression");
+      return;
+    }
+
+    if (/^[0-9+\-*/\s]+$/.test(this.currentOperand)) {
+      try {
+        const result = new Function("return " + this.currentOperand)();
+        console.log(result);
+      } catch (error) {
+        // console.error(error);
+        console.log(error.msg);
+        return error;
+      }
+    } else {
+      console.log("Invalid characters in input");
+    }
+  }
 
   chooseOperation(operation) {
     if (this.currentOperand === " ") return;
