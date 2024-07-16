@@ -20,9 +20,7 @@ class Calculator {
   }
 
   clear() {
-    this.previousOperand = " ";
-    this.currentOperand = " ";
-    this.operation = undefined;
+    this.currentOperandTextElement.value = "";
   }
 
   appendNumber(number) {
@@ -37,20 +35,31 @@ class Calculator {
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === " ") return;
-    if (this.previousOperand !== " ") {
-      this.compute();
-    }
+    if (this.currentOperandTextElement.value === " ") return;
     this.currentOperandTextElement.value += operation;
+    this.currentOperandTextElement.focus();
   }
 
   delete() {
-    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+    this.currentOperandTextElement.value =
+      this.currentOperandTextElement.value.slice(0, -1);
   }
 
   compute() {
     try {
-      const result = math.evaluate(this.currentOperandTextElement.value);
+      let expression = this.currentOperandTextElement.value;
+
+      expression = expression.replace(/sin(\d+)/g, "sin($1)");
+      expression = expression.replace(/cos(\d+)/g, "cos($1)");
+      expression = expression.replace(/tan(\d+)/g, "tan($1)");
+
+      // support hyperbolic function
+      expression = expression.replace(/sinh(\d+)/g, "sinh($1)");
+      expression = expression.replace(/cosh(\d+)/g, "cosh($1)");
+      expression = expression.replace(/tanh(\d+)/g, "tanh($1)");
+      console.log(expression);
+
+      const result = math.evaluate(expression);
       console.log(result);
 
       if (result === undefined) throw new Error("Invalid Operation");
@@ -65,11 +74,6 @@ class Calculator {
       this.currentOperandTextElement.focus();
     }
   }
-
-  updateDisplay() {
-    this.currentOperandTextElement.value = this.currentOperand;
-    this.previousOperandTextElement.innerText = this.previousOperand;
-  }
 }
 
 const calculator = new Calculator(
@@ -81,24 +85,20 @@ const calculator = new Calculator(
 numberButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     calculator.appendNumber(button.textContent);
-    // calculator.updateDisplay();
   });
 });
 
 deleteButton.addEventListener("click", () => {
   calculator.delete();
-  calculator.updateDisplay();
 });
 
 allClearButton.addEventListener("click", () => {
   calculator.clear();
-  calculator.updateDisplay();
 });
 
 numberOperations.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.chooseOperation(button.innerText);
-    // calculator.updateDisplay();
   });
 });
 
