@@ -27,8 +27,21 @@ class Calculator {
 
   appendNumber(number) {
     if (number === "." && this.currentOperand.includes(".")) return;
-    this.currentOperand += number || this.currentOperandTextElement.value;
+    if (!this.currentOperandTextElement.value) {
+      this.currentOperand = "";
+      this.currentOperandTextElement.value = "";
+    }
+
+    this.currentOperandTextElement.value += number;
     this.currentOperandTextElement.focus();
+  }
+
+  chooseOperation(operation) {
+    if (this.currentOperand === " ") return;
+    if (this.previousOperand !== " ") {
+      this.compute();
+    }
+    this.currentOperandTextElement.value += operation;
   }
 
   delete() {
@@ -37,29 +50,20 @@ class Calculator {
 
   compute() {
     try {
-      const result = math.evaluate(this.currentOperand);
+      const result = math.evaluate(this.currentOperandTextElement.value);
+      console.log(result);
 
       if (result === undefined) throw new Error("Invalid Operation");
-      answer.textContent = `${this.currentOperand} = ${result}`;
-
+      answer.textContent = `${this.currentOperandTextElement.value} = ${result}`;
+    } catch (error) {
+      return (answer.textContent =
+        error.msg === undefined && "Invalid Operation");
+    } finally {
       // clear output form
       this.currentOperand = "";
       this.currentOperandTextElement.value = "";
       this.currentOperandTextElement.focus();
-    } catch (error) {
-      return (answer.textContent =
-        error.msg === undefined && "Invalid Operation");
     }
-  }
-
-  chooseOperation(operation) {
-    if (this.currentOperand === " ") return;
-    if (this.previousOperand !== " ") {
-      this.compute();
-    }
-    this.operation = operation;
-    // this.previousOperand = this.currentOperand;
-    this.currentOperand += operation;
   }
 
   updateDisplay() {
@@ -77,7 +81,7 @@ const calculator = new Calculator(
 numberButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     calculator.appendNumber(button.textContent);
-    calculator.updateDisplay();
+    // calculator.updateDisplay();
   });
 });
 
@@ -94,7 +98,7 @@ allClearButton.addEventListener("click", () => {
 numberOperations.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.chooseOperation(button.innerText);
-    calculator.updateDisplay();
+    // calculator.updateDisplay();
   });
 });
 
