@@ -13,14 +13,18 @@ const currentOperandTextElement = document.querySelector(
 const answer = document.querySelector(".answer");
 
 class Calculator {
-  constructor(previousOperandTextElement, currentOperandTextElement) {
+  constructor(previousOperandTextElement, currentOperandTextElement, answer) {
     this.previousOperandTextElement = previousOperandTextElement;
     this.currentOperandTextElement = currentOperandTextElement;
+    this.answer = answer;
     this.clear();
   }
 
   clear() {
     this.currentOperandTextElement.value = "";
+    this.answer.textContent = "";
+
+    this.currentOperandTextElement.focus();
   }
 
   appendNumber(number) {
@@ -57,13 +61,14 @@ class Calculator {
       expression = expression.replace(/sinh(\d+)/g, "sinh($1)");
       expression = expression.replace(/cosh(\d+)/g, "cosh($1)");
       expression = expression.replace(/tanh(\d+)/g, "tanh($1)");
-      console.log(expression);
+      expression = expression.replace(/log(\d+)/g, "log($1)");
+      expression = expression.replace(/exp(\d+)/g, "exp($1)");
 
       const result = math.evaluate(expression);
-      console.log(result);
 
       if (result === undefined) throw new Error("Invalid Operation");
-      answer.textContent = `${this.currentOperandTextElement.value} = ${result}`;
+
+      this.answer.textContent = `${this.currentOperandTextElement.value} = ${result}`;
     } catch (error) {
       return (answer.textContent =
         error.msg === undefined && "Invalid Operation");
@@ -78,7 +83,8 @@ class Calculator {
 
 const calculator = new Calculator(
   previousOperandTextElement,
-  currentOperandTextElement
+  currentOperandTextElement,
+  answer
 );
 
 // Show clicked number
