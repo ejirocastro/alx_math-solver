@@ -4,25 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Math Solver</title>
+    <!-- Link to external stylesheet -->
     <link href="style.css" rel="stylesheet" />
+    <!-- Link to math.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
+    <!-- Link to external script file, with defer attribute to ensure it loads after the HTML -->
     <script src="script.js" defer></script>
   </head>
   <body>
+    <!-- Main container for the calculator -->
     <div class="calculator-grid">
+      <!-- Output section for displaying the current and previous operands and the answer -->
       <div class="output">
+        <!-- Element to display the previous operand -->
         <div data-previous-operand class="previous-operand"></div>
-        <!--<div data-current-operand class="current-operand"></div>-->
+        <!-- Input element for the current operand -->
         <input
           type="text"
           class="current-operand"
           data-current-operand
           autofocus
         />
-
+        <!-- Element to display the answer -->
         <div class="answer"></div>
       </div>
+      <!-- Container for the calculator buttons -->
       <div>
+        <!-- Number buttons -->
         <button cal-number>7</button>
         <button cal-number>8</button>
         <button cal-number>9</button>
@@ -34,11 +42,14 @@
         <button cal-number>3</button>
         <button cal-number>0</button>
         <button cal-number>.</button>
+        <!-- Operation buttons -->
         <button cal-operation>+</button>
         <button cal-operation>-</button>
         <button cal-operation>*</button>
         <button cal-operation>/</button>
+        <!-- Equals button -->
         <button cal-equals>=</button>
+        <!-- Additional operation buttons -->
         <button cal-operation>%</button>
         <button cal-operation>√</button>
         <button cal-operation="sin">sin</button>
@@ -49,11 +60,11 @@
         <button cal-operation="sinh">sinh</button>
         <button cal-operation="tanh">tanh</button>
         <button cal-operation="cosh">cosh</button>
+        <!-- Clear and delete buttons -->
         <button cal-all-clear>AC</button>
         <button cal-delete>DEL</button>
       </div>
     </div>
   </body>
 </html>
-
 
